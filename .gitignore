@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual env
+.venv/
+venv/
+
+# Gradio
+.gradio/
+
+# Model cache
+models/
+data/
+
+# OS
+.DS_Store
+Thumbs.db

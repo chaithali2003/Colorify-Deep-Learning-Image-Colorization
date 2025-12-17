@@ -1,0 +1,10 @@
+modelscope
+Pillow
+numpy
+torch
+sentencepiece
+timm
+opencv-python
+addict
+datasets
+gradio
