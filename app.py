@@ -10,6 +10,7 @@ import PIL
 from pathlib import Path
 import gradio as gr
 import numpy as np
+from modelscope.models import Model
 
 # Silence known deprecation warning from pkg_resources used by modelscope
 warnings.filterwarnings("ignore", message="pkg_resources is deprecated as an API.*")
@@ -71,8 +72,18 @@ def load_model_async():
     """Load model in background thread."""
     global img_colorization, model_loaded
     try:
-        print("Loading model from cache or downloading in background...")
-        img_colorization = pipeline(Tasks.image_colorization, model='iic/cv_ddcolor_image-colorization')
+        print("Loading model from local cache...")
+        # Use local model path
+        local_model_path = os.path.join(MODEL_CACHE_DIR, 'models', 'iic', 'cv_ddcolor_image-colorization')
+        
+        if os.path.exists(local_model_path):
+            print(f"Found local model at {local_model_path}")
+            img_colorization = pipeline(Tasks.image_colorization, model=local_model_path)
+        else:
+            print(f"Local model not found at {local_model_path}")
+            # Try to load from ModelScope as fallback
+            img_colorization = pipeline(Tasks.image_colorization, model='iic/cv_ddcolor_image-colorization')
+        
         model_loaded = True
         print("✓ Model loaded successfully!")
     except Exception as e:
